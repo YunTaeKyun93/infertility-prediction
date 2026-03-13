@@ -55,7 +55,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🌿 브랜치 전략
+## 브랜치 전략
 
 ```
 main                ← 최종 제출본 (건드리지 마세요!!!!!)
