@@ -1,0 +1,19 @@
+numpy
+pandas
+scikit-learn
+
+matplotlib
+seaborn
+
+
+
+# 버전 상의 하기
+
+
+main <-- 당장 안쓸거고
+devlop <-- RP
+
+RP브랜치 
+feat/태균-pipeline
+feat/승희-tune
+feat/재현-feature

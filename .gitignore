@@ -1,0 +1,19 @@
+# 데이터 (용량 큼 - 각자 직접 넣기)
+data/
+outputs/
+
+# 모델 파일
+*.pkl
+*.pt
+
+# 환경
+__pycache__/
+.env
+.DS_Store
+.venv/
+
+# VSCode
+.vscode/
+
+# 주피터
+.ipynb_checkpoints/
