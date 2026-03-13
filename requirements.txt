@@ -1,19 +1,12 @@
-numpy
-pandas
-scikit-learn
+pandas==2.2.0
+numpy==1.26.0
+scikit-learn==1.4.0
 
-matplotlib
-seaborn
+matplotlib==3.8.0
+seaborn==0.13.2
+
+joblib==1.3.2
+
+optuna==3.5.0
 
 
-
-# 버전 상의 하기
-
-
-main <-- 당장 안쓸거고
-devlop <-- RP
-
-RP브랜치 
-feat/태균-pipeline
-feat/승희-tune
-feat/재현-feature

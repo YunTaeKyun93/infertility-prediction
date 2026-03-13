@@ -8,7 +8,7 @@
 
 | 이름 | 역할                      | 담당 파일                         |
 | ---- | ------------------------- | --------------------------------- |
-| 태기 | 학습 파이프라인 설계      | `src/train.py`, `src/predict.py`  |
+| 태균 | 학습 파이프라인 설계      | `src/train.py`, `src/predict.py`  |
 | 승희 | 모델 튜닝                 | Optuna 하이퍼파라미터 튜닝        |
 | 재현 | EDA + Feature Engineering | `src/preprocess.py`, `notebooks/` |
 
@@ -26,10 +26,10 @@ infertility-prediction/
 │   └── sample_submission.csv
 src/
 ├── preprocess.py       ← 재현
-├── train_lgbm.py       ← 태기
+├── train_lgbm.py       ← 태균
 ├── train_xgb.py        ← 승희
-├── ensemble.py         ← 태기 (둘 합치기)
-└── predict.py          ← 태기 (최종 submission)
+├── ensemble.py         ← 태균 (둘 합치기)
+└── predict.py          ← 태균 (최종 submission)
 ├── notebooks/              ← EDA (재현 담당)
 ├── outputs/                ← 모델, submission 저장 (git 제외)
 ├── .gitignore
@@ -60,7 +60,7 @@ pip install -r requirements.txt
 ```
 main                ← 최종 제출본 (건드리지 마세요!!!!!)
 └── develop         ← 팀 공유 브랜치
-     ├── feat/pipeline-태기
+     ├── feat/pipeline-태균
      ├── feat/tuning-승희
      └── feat/eda-재현
 ```
@@ -81,11 +81,11 @@ git switch develop
 git switch -c feat/tuning-승희
 git push origin feat/tuning-승희
 
-# 태기
+# 태균
 
 git switch develop
-git switch -c feat/pipeline-태기
-git push origin feat/pipeline-태기
+git switch -c feat/pipeline-태균
+git push origin feat/pipeline-태균
 
 ````
 
@@ -95,7 +95,7 @@ git push origin feat/pipeline-태기
 # 최우선 작업 본인 브런치로 변경하기
 git switch feat/eda-재현        # 재현
 git switch feat/tuning-승희     # 승희
-git switch feat/pipeline-태기   # 태기
+git switch feat/pipeline-태균   # 태균
 
 # 1. 작업 시작 전 (필수! 업데이트 안하면 무조건 오류납니다!!)
 git pull origin develop
@@ -105,7 +105,7 @@ git add .
 git commit -m "feat: 작업내용"
 git push origin 내브랜치이름
 
-# 3. 작업 완료 시 GitHub에서 develop으로 PR 생성 후 태기한테 연락
+# 3. 작업 완료 시 GitHub에서 develop으로 PR 생성 후 태균한테 연락
 ````
 
 ---
@@ -114,7 +114,7 @@ git push origin 내브랜치이름
 
 1. main 직접 푸시 금지
 2. 작업 시작 전 git pull 필수
-3. 막히면 바로 태기한테 연락(아 물론 git;;; 다른건 같이 상담)
+3. 막히면 바로 태균한테 연락(아 물론 git;;; 다른건 같이 상담)
 
 ---
 
