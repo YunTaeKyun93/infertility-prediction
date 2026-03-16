@@ -4,6 +4,16 @@ LightGBM + XGBoost + CatBoost
 → 피처 엔지니어링 강화 (1등 코드 분석 반영)
 → Optuna 튜닝 + 5-Fold K-Fold
 → Nelder-Mead 최적 가중치 앙상블
+
+
+light -> 
+xgboost ->
+cat ->
+
+xg cat. encemble
+
+kfold / optuna 
+
 """
 
 import pandas as pd
@@ -413,7 +423,7 @@ def optimize_weights(lgb_oof, xgb_oof, cat_oof, y):
 if __name__ == "__main__":
     TRAIN_PATH = "data/train.csv"   # ← 경로 수정
     TEST_PATH  = "data/test.csv"
-    SAVE_DIR   = "."
+    SAVE_DIR   = "outputs"
 
     # 1. 로드
     train_df, test_df = load_data(TRAIN_PATH, TEST_PATH)
