@@ -122,10 +122,11 @@ def preprocess(train: pd.DataFrame, test: pd.DataFrame):
     drop_str = ["시술 당시 나이", "난자 기증자 나이", "정자 기증자 나이"] + CNT_COLS
     df.drop(columns=[c for c in drop_str if c in df.columns], inplace=True)
 
-    # ── Label Encoding
+
+
     le = LabelEncoder()
     for col in df.select_dtypes(include="object").columns:
-        df[col] = le.fit_transform(df[col].fillna("missing").astype(str))
+        df[col] = le.fit_transform(df[col].fillna("missing").astype(str)) #type: ignore
 
     for col in df.select_dtypes(include=["float64", "int64"]).columns:
         if df[col].isnull().sum() > 0:
@@ -134,6 +135,6 @@ def preprocess(train: pd.DataFrame, test: pd.DataFrame):
     X      = df.iloc[:n_train].reset_index(drop=True)
     X_test = df.iloc[n_train:].reset_index(drop=True)
 
-    print(f"전처리 완료 | X: {X.shape} | X_test: {X_test.shape}")
+    print(f"전처리 완료!! | X: {X.shape} | X_test: {X_test.shape}")
     print(f"   scale_pos_weight: {(y==0).sum()/(y==1).sum():.4f}")
     return X, X_test, y
