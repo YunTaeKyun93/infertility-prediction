@@ -1,11 +1,11 @@
 import pandas as pd
 import mlflow
 import warnings
+from sklearn.metrics import roc_auc_score
 import os
 warnings.filterwarnings("ignore")
 
-
-from preprocess import load_data, preprocess
+from preprocess import load_data, preprocess, apply_target_encoding
 from train_lgbm import tune_lgb, train_lgb
 from train_xgb  import tune_xgb, train_xgb
 from train_cat  import tune_cat, train_cat
@@ -27,21 +27,33 @@ if __name__ == "__main__":
 
     train_df, test_df = load_data(TRAIN_PATH, TEST_PATH)
 
-    X, X_test, y = preprocess(train_df, test_df)
+    X, X_test, y = preprocess(train_df, test_df) #type:ignore
+    X, X_test = apply_target_encoding(X, X_test, y)
     spw = (y == 0).sum() / (y == 1).sum()
 
     lgb_best = tune_lgb(X, y, spw)
     xgb_best = tune_xgb(X, y, spw)
     cat_best = tune_cat(X, y, spw)
 
-    lgb_oof, lgb_test, lgb_auc = train_lgb(X, X_test, y, lgb_best)
+    lgb_oof, lgb_test, lgb_auc = train_lgb(X, X_test, y, lgb_best) #type:ignore
     xgb_oof, xgb_test, xgb_auc = train_xgb(X, X_test, y, xgb_best)
     cat_oof, cat_test, cat_auc = train_cat(X, X_test, y, cat_best)
 
     opt_w, opt_auc = optimize_weights(lgb_oof, xgb_oof, cat_oof, y)
 
     final_pred = opt_w[0]*lgb_test + opt_w[1]*xgb_test + opt_w[2]*cat_test
+    final_pred = xgb_test
     submission = pd.DataFrame({"ID": test_df["ID"], "probability": final_pred})
     submission.to_csv(f"{SAVE_DIR}/submission_v3.csv", index=False)
     print(f"\n submission_tk.csv 저장 완료  (OOF AUC: {opt_auc:.5f})")
     print(f"\n MLflow UI 확인: mlflow ui")
+
+    
+    print("\n📊 단독 vs 앙상블 비교")
+    print(f"XGBoost 단독:        {roc_auc_score(y, xgb_oof):.5f}")
+    print(f"XGB+CAT 앙상블:      {roc_auc_score(y, xgb_oof*0.7 + cat_oof*0.3):.5f}")
+    print(f"최적가중치 앙상블:   {roc_auc_score(y, opt_w[0]*lgb_oof + opt_w[1]*xgb_oof + opt_w[2]*cat_oof):.5f}")
+
+
+
+ 

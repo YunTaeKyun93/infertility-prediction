@@ -1,9 +1,17 @@
 import numpy as np
 import lightgbm as lgb
 import mlflow
+import os
 import optuna
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_auc_score
+import shap
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
+
+plt.rcParams['font.family'] = 'AppleGothic'
+plt.rcParams['axes.unicode_minus'] = False
 
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
@@ -11,7 +19,8 @@ SEED       = 42
 N_TRIALS   = 50
 TUNE_FOLDS = 3
 N_FOLDS    = 5
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+save_path = os.path.join(BASE_DIR, "outputs/figures/shap_importance.png")
 
 def tune_lgb(X, y, spw):
     print(f"\nLightGBM Optuna 튜닝 ({N_TRIALS}  × {TUNE_FOLDS})...")
@@ -84,5 +93,17 @@ def train_lgb(X, X_test, y, lgb_best):
         oof_auc = roc_auc_score(y, lgb_oof)
         mlflow.log_metric("oof_auc", oof_auc)#type:ignore
         print(f"  ➜ LGB OOF AUC: {oof_auc:.5f}")
+
+    print("SHA계산 합니당")
+    explainer = shap.TreeExplainer(m)
+    shap_vals = explainer.shap_values(X)
+    if isinstance(shap_vals, list):
+        shap.summary_plot(shap_vals[1], X, max_display=30, show=False)
+    else:
+        shap.summary_plot(shap_vals, X, max_display=30, show=False)
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150, bbox_inches="tight")
+    plt.close()
+    print("SHAP 저장 완료 → outputs/figures/shap_importance.png")
 
     return lgb_oof, lgb_test, oof_auc
