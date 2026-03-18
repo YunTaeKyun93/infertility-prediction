@@ -1,6 +1,8 @@
 import pandas as pd
 
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+import lightgbm as lgb
 
 HIGH_NULL_COLS = [
     "난자 해동 경과일", "PGS 시술 여부", "PGD 시술 여부",
@@ -188,3 +190,27 @@ def apply_target_encoding(X, X_test, y):
         X_test[f"{col}_te"] = X_test[col].map(mean_map).fillna(global_mean)
     print("타깃 인코딩 완료")
     return X, X_test
+
+
+
+
+def select_features(X, X_test, y, spw, threshold_pct=10):
+    print(f"\n피처 선택 중...")
+    X_tr, X_val, y_tr, y_val = train_test_split(
+        X, y, test_size=0.2, stratify=y, random_state=42
+    )
+    m = lgb.LGBMClassifier(
+        objective="binary", metric="auc",
+        verbose=-1, n_jobs=-1, random_state=42,
+        scale_pos_weight=spw, n_estimators=500,
+        learning_rate=0.05, num_leaves=127,
+    )
+    m.fit(X_tr, y_tr,
+          eval_set=[(X_val, y_val)],
+          callbacks=[lgb.early_stopping(50, verbose=False),
+                     lgb.log_evaluation(-1)])
+    importance   = pd.Series(m.feature_importances_, index=X.columns)
+    threshold    = importance.quantile(threshold_pct / 100)
+    keep_cols    = importance[importance > threshold].index.tolist()
+    print(f"  {len(X.columns)}개 → {len(keep_cols)}개 (하위 {threshold_pct}% 제거)")
+    return X[keep_cols], X_test[keep_cols]
