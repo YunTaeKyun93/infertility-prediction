@@ -33,3 +33,4 @@ data_check.py
 
 *.png
 *.csv
+/mlruns
