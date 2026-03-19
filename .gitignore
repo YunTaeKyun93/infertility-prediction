@@ -17,3 +17,20 @@ __pycache__/
 
 # 주피터
 .ipynb_checkpoints/
+
+catboost_info/
+**/catboost_info/
+*.cbm
+train_failure.py
+mlruns/
+
+*.tsv
+*.json
+db.transit.json
+train_failure.py
+data_check.py
+
+
+*.png
+*.csv
+/mlruns
