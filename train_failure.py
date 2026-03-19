@@ -314,16 +314,14 @@ if __name__ == "__main__":
         pred_2nd = opt_w2[0]*lgb_test2 + opt_w2[1]*xgb_test2 + opt_w2[2]*cat_test2
     else:
         print("  추가할 케이스 없음 → 1차 결과만 사용")
-        pred_2nd  = pred_1st
+        pred_2nd  = pred_1stㅅ
         opt_auc2  = 0
 
     # 5. 기존 제출 파일 앙상블과 최종 합산
     print("\n🔀 기존 파일 + 새 예측 최종 앙상블...")
     old_files = [
-        "submission_kfold.csv",
-        "submission_fast.csv",
-        "submission_fs.csv",
-        "submission_v3.csv",
+        "submission_failure.csv",    # 기존 best
+    "submission_autogluon.csv",
     ]
     old_preds = []
     for f in old_files:
