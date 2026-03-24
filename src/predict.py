@@ -89,3 +89,7 @@ if __name__ == "__main__":
     print(f"XGBoost 단독:        {roc_auc_score(y, xgb_oof):.5f}")
     print(f"CatBoost 단독:       {roc_auc_score(y, cat_oof):.5f}")
     print(f"최적가중치 앙상블:   {roc_auc_score(y, opt_w[0]*lgb_oof + opt_w[1]*xgb_oof + opt_w[2]*cat_oof):.5f}")
+
+
+
+    
